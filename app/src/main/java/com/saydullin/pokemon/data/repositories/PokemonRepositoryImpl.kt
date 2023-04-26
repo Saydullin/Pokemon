@@ -2,7 +2,6 @@ package com.saydullin.pokemon.data.repositories
 
 import com.saydullin.pokemon.api.services.GetPokemonsService
 import com.saydullin.pokemon.data.db.dao.PokemonDao
-import com.saydullin.pokemon.domain.models.Pokemon
 import com.saydullin.pokemon.domain.models.PokemonBody
 import com.saydullin.pokemon.domain.repositories.PokemonRepository
 import com.saydullin.pokemon.domain.utils.Resource
@@ -15,21 +14,33 @@ class PokemonRepositoryImpl @Inject constructor(
 ) : PokemonRepository {
 
     override suspend fun getPokemonsAPI(): Resource<PokemonBody> {
-        val pokemons = pokemonsService.getPokemons()
-        val pokemonsBody = pokemons.body()
-        if (pokemons.isSuccessful && pokemonsBody != null) {
-            return Resource.Success(pokemonsBody)
+        try {
+            val pokemons = pokemonsService.getPokemons()
+            val pokemonsBody = pokemons.body()
+            if (pokemons.isSuccessful && pokemonsBody != null) {
+                return Resource.Success(pokemonsBody)
+            }
+
+            return Resource.Error(
+                statusCode = StatusCode.CONNECTION_ERROR
+            )
+        } catch (e: Exception) {
+            return Resource.Error(
+                statusCode = StatusCode.CONNECTION_ERROR
+            )
         }
 
-        return Resource.Error(
-            statusCode = StatusCode.CONNECTION_ERROR
-        )
     }
 
-    override suspend fun getPokemonsDB(): Resource<ArrayList<Pokemon>> {
-        val pokemons = pokemonDao.getPokemons().map { it.toPokemon() } as ArrayList<Pokemon>
+    override suspend fun getPokemonsDB(): Resource<PokemonBody> {
+        val pokemonBody = pokemonDao.getPokemonsBody()
+            ?: return Resource.Error(StatusCode.DATA_NOT_FOUND)
 
-        return Resource.Success(pokemons)
+        return Resource.Success(pokemonBody.toPokemonBody())
+    }
+
+    override suspend fun savePokemonsDB(pokemonBody: PokemonBody) {
+        pokemonDao.savePokemonsBody(pokemonBody.toPokemonBodyEntity())
     }
 
 }
