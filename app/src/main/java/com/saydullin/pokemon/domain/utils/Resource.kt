@@ -5,6 +5,7 @@ enum class StatusCode {
     SERVER_ERROR,
     CONNECTION_ERROR,
     UNKNOWN_ERROR,
+    DATA_NOT_FOUND,
     SUCCESS,
 }
 
