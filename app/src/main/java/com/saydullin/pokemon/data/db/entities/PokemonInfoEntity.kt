@@ -10,7 +10,9 @@ import com.saydullin.pokemon.domain.models.PokemonType
 data class PokemonInfoEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo val name: String,
-    @ColumnInfo val url: String,
+    @ColumnInfo val weight: Int,
+    @ColumnInfo val height: Int,
+    @ColumnInfo val url: String?,
     @TypeConverters(PokemonTypeListConverter::class) val types: List<PokemonType>,
     @ColumnInfo val frontImage: String
 ) {
@@ -18,6 +20,8 @@ data class PokemonInfoEntity(
     fun toPokemonInfo() = PokemonInfo(
         id = id,
         name = name,
+        weight = weight,
+        height = height,
         url = url,
         types = types,
         sprites = PokemonInfoSprite(
