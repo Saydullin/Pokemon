@@ -5,16 +5,20 @@ import com.saydullin.pokemon.data.db.entities.PokemonInfoEntity
 data class PokemonInfo(
     val id: Int,
     val name: String,
-    val url: String,
     val types: List<PokemonType>,
+    val url: String?,
+    val weight: Int,
+    val height: Int,
     val sprites: PokemonInfoSprite,
 ) {
 
-    fun toPokemonInfoEntity() = PokemonInfoEntity(
+    fun toPokemonInfoEntity(urlLink: String) = PokemonInfoEntity(
         id = id,
         name = name,
-        url = url,
+        weight = weight,
+        height = height,
         types = types,
+        url = urlLink,
         frontImage = sprites.front_default
     )
 
