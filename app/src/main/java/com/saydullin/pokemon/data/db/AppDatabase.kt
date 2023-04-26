@@ -6,12 +6,15 @@ import androidx.room.TypeConverters
 import com.saydullin.pokemon.data.db.converters.PokemonListConverter
 import com.saydullin.pokemon.data.db.converters.PokemonTypeListConverter
 import com.saydullin.pokemon.data.db.dao.PokemonDao
+import com.saydullin.pokemon.data.db.dao.PokemonInfoDao
+import com.saydullin.pokemon.data.db.entities.PokemonBodyEntity
 import com.saydullin.pokemon.data.db.entities.PokemonEntity
 import com.saydullin.pokemon.data.db.entities.PokemonInfoEntity
 
 @Database(
     entities = [
         PokemonEntity::class,
+        PokemonBodyEntity::class,
         PokemonInfoEntity::class,
     ],
     version = 1,
@@ -24,5 +27,7 @@ import com.saydullin.pokemon.data.db.entities.PokemonInfoEntity
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun pokemonDao(): PokemonDao
+
+    abstract fun pokemonInfoDao(): PokemonInfoDao
 
 }
