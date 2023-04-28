@@ -6,7 +6,7 @@
     <string name="data_error">Data error</string>
     <string name="data_not_found_error">Data not found</string>
     <string name="server_error">Server error</string>
-    <string name="connection_error">Connection internet</string>
+    <string name="connection_error">Check your network connection</string>
     <string name="success">Operation was successfully completed</string>
 
     <string name="weight_num_kg">Weight %d kg</string>
