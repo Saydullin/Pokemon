@@ -21,7 +21,7 @@ fun PokemonItem(pokemon: Pokemon, onClick: (pokemon: Pokemon) -> Unit) {
     Card(
         modifier = Modifier
             .background(TextOnPrimary)
-            .padding(horizontal = 20.dp, vertical = 10.dp),
+            .padding(horizontal = 20.dp, vertical = 5.dp),
         shape = RoundedCornerShape(15.dp),
         onClick = {
             onClick(pokemon)
