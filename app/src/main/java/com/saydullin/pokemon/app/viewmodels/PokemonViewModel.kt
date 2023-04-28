@@ -1,6 +1,5 @@
 package com.saydullin.pokemon.app.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
@@ -23,30 +22,34 @@ class PokemonViewModel @Inject constructor(
 
     val pokemon: MutableState<List<Pokemon>> = mutableStateOf(listOf())
     val pokemonInfo: MutableState<PokemonInfo?> = mutableStateOf(null)
+    val loading: MutableState<Boolean?> = mutableStateOf(null)
     val error = MutableLiveData<StatusCode?>(null)
     val isOffline: MutableState<Boolean> = mutableStateOf(false)
 
     fun getPokemonInfo(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            loading.value = true
             val pokemonInfoRequest = getPokemonInfoUseCase.getPokemonInfoFromAPI(url)
 
             if (pokemonInfoRequest is Resource.Success && pokemonInfoRequest.data != null) {
                 pokemonInfo.value = pokemonInfoRequest.data
-                Log.e("sady", "pokemonInfo ${pokemonInfo.value}")
                 getPokemonInfoUseCase.savePokemonInfoDB(pokemonInfoRequest.data, url)
                 isOffline.value = false
             } else {
                 if (pokemonInfoRequest.statusCode == StatusCode.CONNECTION_ERROR) {
                     isOffline.value = true
                     getPokemonInfoDB(url)
+                } else {
+                    error.postValue(pokemonInfoRequest.statusCode)
                 }
-                error.postValue(pokemonInfoRequest.statusCode)
             }
+            loading.value = false
         }
     }
 
     fun getPokemons() {
         viewModelScope.launch(Dispatchers.IO) {
+            loading.value = true
             val pokemonRequest = getPokemonUseCase.getPokemonsAPI()
 
             if (pokemonRequest is Resource.Success && pokemonRequest.data != null) {
@@ -57,9 +60,11 @@ class PokemonViewModel @Inject constructor(
                 if (pokemonRequest.statusCode == StatusCode.CONNECTION_ERROR) {
                     isOffline.value = true
                     getPokemonsDB()
+                } else {
+                    error.postValue(pokemonRequest.statusCode)
                 }
-                error.postValue(pokemonRequest.statusCode)
             }
+            loading.value = false
         }
     }
 
@@ -70,7 +75,7 @@ class PokemonViewModel @Inject constructor(
             if (pokemonInfoRequest is Resource.Success && pokemonInfoRequest.data != null) {
                 pokemonInfo.value = pokemonInfoRequest.data
             } else {
-                error.value = pokemonInfoRequest.statusCode
+                error.postValue(pokemonInfoRequest.statusCode)
             }
         }
     }
@@ -82,7 +87,7 @@ class PokemonViewModel @Inject constructor(
             if (pokemonRequest is Resource.Success && pokemonRequest.data != null) {
                 pokemon.value = pokemonRequest.data.results
             } else {
-                error.value = pokemonRequest.statusCode
+                error.postValue(pokemonRequest.statusCode)
             }
         }
     }
