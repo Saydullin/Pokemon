@@ -7,16 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
 import com.saydullin.pokemon.R
+import com.saydullin.pokemon.app.screens.components.HeaderView
 import com.saydullin.pokemon.app.ui.theme.TextOnPrimary
 import com.saydullin.pokemon.app.viewmodels.PokemonViewModel
 
 @Composable
-fun PokemonInfoScreen(pokemonViewModel: PokemonViewModel) {
+fun PokemonInfoScreen(navController: NavController, pokemonViewModel: PokemonViewModel) {
 
     val context = LocalContext.current
     val pokemonInfo = pokemonViewModel.pokemonInfo.value
-    val loading = pokemonViewModel.loading.value
+    val loading = pokemonViewModel.pokemonInfoLoading.value
 
     Column(
         modifier = Modifier
@@ -25,6 +27,7 @@ fun PokemonInfoScreen(pokemonViewModel: PokemonViewModel) {
     ) {
         HeaderView(
             title = pokemonInfo?.name ?: "",
+            navController = navController,
             pokemonViewModel = pokemonViewModel,
             hasBackButton = true
         )
