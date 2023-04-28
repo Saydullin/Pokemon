@@ -13,6 +13,7 @@ import com.saydullin.pokemon.app.screens.PokemonInfoScreen
 import com.saydullin.pokemon.app.viewmodels.PokemonViewModel
 import com.saydullin.pokemon.app.viewmodels.PokemonViewModelFactory
 import com.saydullin.pokemon.app.ui.theme.PokemonTheme
+import com.saydullin.pokemon.app.utils.StatusText
 import javax.inject.Inject
 
 class PokemonInfoActivity : ComponentActivity() {
@@ -34,10 +35,10 @@ class PokemonInfoActivity : ComponentActivity() {
             vmPokemon.getPokemonInfo(pokemonUrl)
         }
 
-
-        vmPokemon.error.observe(this) {
-            if (it != null) {
-                Toast.makeText(this, "Error $it", Toast.LENGTH_SHORT).show()
+        vmPokemon.error.observe(this) { statusCode ->
+            if (statusCode != null) {
+                val statusText = StatusText(this, statusCode)
+                Toast.makeText(this, statusText.getCaption(), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -52,6 +53,5 @@ class PokemonInfoActivity : ComponentActivity() {
         }
     }
 }
-
 
 
