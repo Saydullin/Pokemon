@@ -1,20 +1,31 @@
 package com.saydullin.pokemon.app.screens
 
+import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.saydullin.pokemon.R
 import com.saydullin.pokemon.app.ui.theme.Primary
 import com.saydullin.pokemon.app.ui.theme.TextOnPrimary
 import com.saydullin.pokemon.app.viewmodels.PokemonViewModel
 
 @Composable
-fun HeaderView(pokemonViewModel: PokemonViewModel) {
+fun HeaderView(title: String, pokemonViewModel: PokemonViewModel, hasBackButton: Boolean = false) {
 
+    val activity = (LocalContext.current as? Activity)
+    val context = LocalContext.current
     val isOffline = pokemonViewModel.isOffline.value
 
     Box(
@@ -24,24 +35,53 @@ fun HeaderView(pokemonViewModel: PokemonViewModel) {
             .padding(20.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Pokemon App",
-                fontSize = 20.sp,
-                style = MaterialTheme.typography.titleLarge,
-                color = TextOnPrimary
-            )
-
-            if (isOffline) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (hasBackButton) {
+                    IconButton(
+                        modifier = Modifier
+                            .width(25.dp)
+                            .height(25.dp),
+                        onClick = {
+                            activity?.finish()
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back),
+                            tint = Color.White,
+                            contentDescription = context.getString(R.string.cd_back)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(20.dp))
+                }
                 Text(
-                    text = "You are offline",
-                    fontSize = 18.sp,
-                    style = MaterialTheme.typography.titleMedium,
+                    text = title,
+                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.titleLarge,
                     color = TextOnPrimary
                 )
             }
-
+            if (isOffline) {
+                IconButton(
+                    modifier = Modifier
+                        .width(25.dp)
+                        .height(25.dp),
+                    onClick = {
+                        Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show()
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_no_connection),
+                        tint = Color.White,
+                        contentDescription = context.getString(R.string.cd_back)
+                    )
+                }
+            }
         }
     }
 
