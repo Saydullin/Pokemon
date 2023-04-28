@@ -1,4 +1,4 @@
-package com.saydullin.pokemon.api.services
+package com.saydullin.pokemon.data.api.services
 
 import com.saydullin.pokemon.domain.models.PokemonBody
 import retrofit2.Response
