@@ -1,6 +1,5 @@
 package com.saydullin.pokemon.data.repositories
 
-import android.util.Log
 import com.saydullin.pokemon.api.services.GetPokemonInfoService
 import com.saydullin.pokemon.data.db.dao.PokemonInfoDao
 import com.saydullin.pokemon.domain.models.PokemonInfo
@@ -18,7 +17,6 @@ class PokemonInfoRepositoryImpl @Inject constructor(
         try {
             val pokemons = pokemonInfoService.getPokemonInfo(url)
             val pokemonsBody = pokemons.body()
-            Log.e("sady", "pokemonsBody $pokemonsBody")
             if (pokemons.isSuccessful && pokemonsBody != null) {
                 return Resource.Success(pokemonsBody)
             }
