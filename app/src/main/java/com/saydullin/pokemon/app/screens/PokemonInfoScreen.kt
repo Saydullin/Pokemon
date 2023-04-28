@@ -1,61 +1,57 @@
 package com.saydullin.pokemon.app.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import com.saydullin.pokemon.R
 import com.saydullin.pokemon.app.ui.theme.TextOnPrimary
 import com.saydullin.pokemon.app.viewmodels.PokemonViewModel
 
 @Composable
 fun PokemonInfoScreen(pokemonViewModel: PokemonViewModel) {
 
+    val context = LocalContext.current
     val pokemonInfo = pokemonViewModel.pokemonInfo.value
-
-    Log.e("sady", "PokemonInfoScreen ${pokemonInfo}")
+    val loading = pokemonViewModel.loading.value
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(TextOnPrimary)
     ) {
-        if (pokemonInfo == null) {
-            Text(
-                text = "No data",
-                style = MaterialTheme.typography.titleLarge
-            )
-        } else {
-            Text(
-                text = pokemonInfo.name,
-                style = MaterialTheme.typography.titleLarge
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = pokemonInfo.weight.toString(),
-                style = MaterialTheme.typography.titleLarge
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = pokemonInfo.height.toString(),
-                style = MaterialTheme.typography.titleLarge
-            )
-            LazyColumn(
-                modifier = Modifier.fillMaxHeight()
+        HeaderView(
+            title = pokemonInfo?.name ?: "",
+            pokemonViewModel = pokemonViewModel,
+            hasBackButton = true
+        )
+        if (loading == true) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(TextOnPrimary),
+                contentAlignment = Alignment.Center,
             ) {
-                itemsIndexed(pokemonInfo.types) { _, item ->
-                    Text(
-                        modifier = Modifier.padding(10.dp),
-                        text = item.type.name,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                }
+                CircularProgressIndicator()
             }
+        }
+        if (pokemonInfo == null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(TextOnPrimary),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = context.getString(R.string.no_data),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+        } else {
+            PokemonInfoSContent(pokemonInfo)
         }
     }
 }
