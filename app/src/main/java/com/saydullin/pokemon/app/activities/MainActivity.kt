@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.rememberNavController
 import com.saydullin.pokemon.app.App
-import com.saydullin.pokemon.app.screens.MainScreen
+import com.saydullin.pokemon.app.navigation.SetupNavGraph
 import com.saydullin.pokemon.app.viewmodels.PokemonViewModel
 import com.saydullin.pokemon.app.viewmodels.PokemonViewModelFactory
 import com.saydullin.pokemon.app.ui.theme.PokemonTheme
+import com.saydullin.pokemon.app.ui.theme.TextOnPrimary
 import com.saydullin.pokemon.app.utils.StatusText
 import javax.inject.Inject
 
@@ -39,20 +41,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             PokemonTheme {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.background(TextOnPrimary)
                 ) {
-                    MainScreen(vmPokemon)
+                    val navController = rememberNavController()
+                    SetupNavGraph(navController = navController, vmPokemon)
                 }
             }
         }
     }
-
-    override fun onStart() {
-        super.onStart()
-
-        vmPokemon.getPokemons()
-    }
-
 }
 
 
