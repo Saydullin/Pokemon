@@ -9,6 +9,7 @@ import com.saydullin.pokemon.data.db.converters.PokemonTypeListConverter
 import com.saydullin.pokemon.data.db.dao.PokemonDao
 import com.saydullin.pokemon.data.db.dao.PokemonInfoDao
 import com.saydullin.pokemon.domain.usecases.GetPokemonInfoUseCase
+import com.saydullin.pokemon.domain.usecases.GetPokemonPagingUseCase
 import com.saydullin.pokemon.domain.usecases.GetPokemonUseCase
 import dagger.Module
 import dagger.Provides
@@ -29,10 +30,12 @@ class AppModule(private val mApplicationContext: Context) {
     fun providePokemonViewModel(
         getPokemonUseCase: GetPokemonUseCase,
         getPokemonInfoUseCase: GetPokemonInfoUseCase,
+        getPokemonPagingUseCase: GetPokemonPagingUseCase,
     ) : PokemonViewModelFactory {
         return PokemonViewModelFactory(
             getPokemonUseCase = getPokemonUseCase,
             getPokemonInfoUseCase = getPokemonInfoUseCase,
+            getPokemonPagingUseCase = getPokemonPagingUseCase,
         )
     }
 
