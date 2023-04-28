@@ -1,8 +1,9 @@
 package com.saydullin.pokemon.app.di
 
-import com.saydullin.pokemon.api.RetrofitBuilder
-import com.saydullin.pokemon.api.services.GetPokemonInfoService
-import com.saydullin.pokemon.api.services.GetPokemonsService
+import com.saydullin.pokemon.data.api.RetrofitBuilder
+import com.saydullin.pokemon.data.api.services.GetPokemonInfoService
+import com.saydullin.pokemon.data.api.services.GetPokemonPagingService
+import com.saydullin.pokemon.data.api.services.GetPokemonsService
 import dagger.Module
 import dagger.Provides
 import retrofit2.create
@@ -18,6 +19,12 @@ class NetworkModule {
 
     @Provides
     fun providePokemonInfoService(): GetPokemonInfoService {
+        val retrofit = RetrofitBuilder.getInstance()
+        return retrofit.create()
+    }
+
+    @Provides
+    fun providePokemonPagingService(): GetPokemonPagingService {
         val retrofit = RetrofitBuilder.getInstance()
         return retrofit.create()
     }
