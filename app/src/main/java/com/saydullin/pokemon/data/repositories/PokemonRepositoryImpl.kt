@@ -1,6 +1,6 @@
 package com.saydullin.pokemon.data.repositories
 
-import com.saydullin.pokemon.api.services.GetPokemonsService
+import com.saydullin.pokemon.data.api.services.GetPokemonsService
 import com.saydullin.pokemon.data.db.dao.PokemonDao
 import com.saydullin.pokemon.domain.models.PokemonBody
 import com.saydullin.pokemon.domain.repositories.PokemonRepository
