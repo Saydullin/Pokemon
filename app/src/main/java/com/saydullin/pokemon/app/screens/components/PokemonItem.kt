@@ -1,4 +1,4 @@
-package com.saydullin.pokemon.app.screens
+package com.saydullin.pokemon.app.screens.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
