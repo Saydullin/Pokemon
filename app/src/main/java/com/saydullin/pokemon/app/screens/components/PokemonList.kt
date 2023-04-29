@@ -1,11 +1,6 @@
 package com.saydullin.pokemon.app.screens.components
 
-import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -20,8 +15,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.saydullin.pokemon.app.navigation.Screen
-import com.saydullin.pokemon.app.ui.theme.TextOnPrimary
-import com.saydullin.pokemon.app.utils.StatusText
+import com.saydullin.pokemon.R
 import com.saydullin.pokemon.app.viewmodels.PokemonViewModel
 import com.saydullin.pokemon.domain.models.Pokemon
 import com.saydullin.pokemon.domain.utils.StatusCode
@@ -32,24 +26,12 @@ fun PokemonList(navController: NavController, pokemonViewModel: PokemonViewModel
     val allPokemons = pokemonViewModel.getAllPokemons.collectAsLazyPagingItems()
     val loadState = allPokemons.loadState
     val context = LocalContext.current
-    val loading = pokemonViewModel.pokemonLoading.value
 
     val onClickPokemon = { pokemon: Pokemon ->
         pokemonViewModel.getPokemonInfo(pokemon.url)
         navController.navigate(Screen.PokemonInfo.route)
     }
 
-    if (loading == true) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(TextOnPrimary),
-            contentAlignment = Alignment.Center,
-        ) {
-            CircularProgressIndicator()
-        }
-        return
-    }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -64,8 +46,9 @@ fun PokemonList(navController: NavController, pokemonViewModel: PokemonViewModel
         }
         if (loadState.refresh is LoadState.Loading
             || loadState.append is LoadState.Loading
-            || loadState.prepend is LoadState.Loading
         ) {
+            pokemonViewModel.setError(null)
+            pokemonViewModel.setOffline(false)
             item {
                 Box(
                     modifier = Modifier
@@ -77,20 +60,18 @@ fun PokemonList(navController: NavController, pokemonViewModel: PokemonViewModel
                 }
             }
         }
-        if (loadState.refresh is LoadState.Error
-            || loadState.append is LoadState.Error
-            || loadState.prepend is LoadState.Error) {
-            val statusText = StatusText(context, StatusCode.CONNECTION_ERROR)
-            Toast.makeText(context, statusText.getCaption(), Toast.LENGTH_SHORT).show()
+        if (loadState.refresh is LoadState.Error ||
+            loadState.append is LoadState.Error) {
+            pokemonViewModel.setError(StatusCode.CONNECTION_ERROR)
             item {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Button(onClick = { allPokemons.refresh() }) {
-                        Text(text = "Retry")
+                        Text(text = context.getString(R.string.try_again))
                     }
                 }
             }
