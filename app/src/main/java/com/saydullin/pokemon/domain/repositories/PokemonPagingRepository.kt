@@ -9,5 +9,3 @@ interface PokemonPagingRepository {
     fun getAllPokemons(): Flow<PagingData<PokemonEntity>>
 
 }
-
-

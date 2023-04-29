@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "93288a3cba51f88ef9ae1791b26bce1a",
+    "identityHash": "2574e4065d954b40972d6da680ff7ba9",
     "entities": [
       {
         "tableName": "PokemonEntity",
@@ -23,50 +23,6 @@
           {
             "fieldPath": "url",
             "columnName": "url",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "id"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "PokemonBodyEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `count` INTEGER NOT NULL, `next` TEXT NOT NULL, `previous` TEXT NOT NULL, `pokemonsList` TEXT NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "count",
-            "columnName": "count",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "next",
-            "columnName": "next",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "previous",
-            "columnName": "previous",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "pokemonsList",
-            "columnName": "pokemonsList",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -178,7 +134,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93288a3cba51f88ef9ae1791b26bce1a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2574e4065d954b40972d6da680ff7ba9')"
     ]
   }
 }

@@ -12,5 +12,3 @@ interface PokemonInfoRepository {
     suspend fun savePokemonInfoDB(pokemonInfo: PokemonInfo, url: String)
 
 }
-
-

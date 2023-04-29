@@ -9,16 +9,13 @@ import com.saydullin.pokemon.domain.models.Pokemon
 import com.saydullin.pokemon.domain.models.PokemonInfo
 import com.saydullin.pokemon.domain.usecases.GetPokemonInfoUseCase
 import com.saydullin.pokemon.domain.usecases.GetPokemonPagingUseCase
-import com.saydullin.pokemon.domain.usecases.GetPokemonUseCase
 import com.saydullin.pokemon.domain.utils.Resource
 import com.saydullin.pokemon.domain.utils.StatusCode
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PokemonViewModel @Inject constructor(
-    private val getPokemonUseCase: GetPokemonUseCase,
     private val getPokemonInfoUseCase: GetPokemonInfoUseCase,
     getPokemonPagingUseCase: GetPokemonPagingUseCase,
 ) : ViewModel() {
@@ -30,10 +27,6 @@ class PokemonViewModel @Inject constructor(
     val error = MutableLiveData<StatusCode?>(null)
     val isOffline: MutableState<Boolean> = mutableStateOf(false)
     val getAllPokemons = getPokemonPagingUseCase.getAllPokemons()
-
-    fun retryPokemons() {
-        getAllPokemons.retry()
-    }
 
     fun getPokemonInfo(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -57,28 +50,6 @@ class PokemonViewModel @Inject constructor(
         }
     }
 
-    fun getPokemons() {
-        viewModelScope.launch(Dispatchers.IO) {
-            pokemonLoading.value = true
-            val pokemonRequest = getPokemonUseCase.getPokemonsAPI()
-
-            if (pokemonRequest is Resource.Success && pokemonRequest.data != null) {
-                pokemon.value = pokemonRequest.data.results
-                getPokemonUseCase.savePokemonsDB(pokemonRequest.data)
-                isOffline.value = false
-            } else {
-                if (pokemonRequest.statusCode == StatusCode.CONNECTION_ERROR) {
-                    isOffline.value = true
-                    getPokemonsDB()
-                } else {
-                    pokemon.value = listOf()
-                    error.postValue(pokemonRequest.statusCode)
-                }
-            }
-            pokemonLoading.value = false
-        }
-    }
-
     private fun getPokemonInfoDB(url: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val pokemonInfoRequest = getPokemonInfoUseCase.getPokemonInfoFromDB(url)
@@ -88,19 +59,6 @@ class PokemonViewModel @Inject constructor(
             } else {
                 pokemonInfo.value = null
                 error.postValue(pokemonInfoRequest.statusCode)
-            }
-        }
-    }
-
-    private fun getPokemonsDB() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val pokemonRequest = getPokemonUseCase.getPokemonsDB()
-
-            if (pokemonRequest is Resource.Success && pokemonRequest.data != null) {
-                pokemon.value = pokemonRequest.data.results
-            } else {
-                pokemon.value = listOf()
-                error.postValue(pokemonRequest.statusCode)
             }
         }
     }

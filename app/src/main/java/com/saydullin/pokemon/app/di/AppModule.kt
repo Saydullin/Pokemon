@@ -4,13 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import com.saydullin.pokemon.app.viewmodels.PokemonViewModelFactory
 import com.saydullin.pokemon.data.db.AppDatabase
-import com.saydullin.pokemon.data.db.converters.PokemonListConverter
 import com.saydullin.pokemon.data.db.converters.PokemonTypeListConverter
-import com.saydullin.pokemon.data.db.dao.PokemonDao
 import com.saydullin.pokemon.data.db.dao.PokemonInfoDao
 import com.saydullin.pokemon.domain.usecases.GetPokemonInfoUseCase
 import com.saydullin.pokemon.domain.usecases.GetPokemonPagingUseCase
-import com.saydullin.pokemon.domain.usecases.GetPokemonUseCase
 import dagger.Module
 import dagger.Provides
 
@@ -22,18 +19,15 @@ class AppModule(private val mApplicationContext: Context) {
         AppDatabase::class.java,
         "AppDB"
     )
-        .addTypeConverter(PokemonListConverter())
         .addTypeConverter(PokemonTypeListConverter())
         .build()
 
     @Provides
     fun providePokemonViewModel(
-        getPokemonUseCase: GetPokemonUseCase,
         getPokemonInfoUseCase: GetPokemonInfoUseCase,
         getPokemonPagingUseCase: GetPokemonPagingUseCase,
     ) : PokemonViewModelFactory {
         return PokemonViewModelFactory(
-            getPokemonUseCase = getPokemonUseCase,
             getPokemonInfoUseCase = getPokemonInfoUseCase,
             getPokemonPagingUseCase = getPokemonPagingUseCase,
         )
@@ -47,11 +41,6 @@ class AppModule(private val mApplicationContext: Context) {
     @Provides
     fun provideAppDatabase(): AppDatabase {
         return appDatabase
-    }
-
-    @Provides
-    fun providesPokemonDao(appDatabase: AppDatabase): PokemonDao {
-        return appDatabase.pokemonDao()
     }
 
     @Provides
