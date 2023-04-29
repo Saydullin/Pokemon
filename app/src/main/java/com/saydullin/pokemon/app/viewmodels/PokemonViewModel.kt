@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.saydullin.pokemon.domain.models.Pokemon
 import com.saydullin.pokemon.domain.models.PokemonInfo
 import com.saydullin.pokemon.domain.usecases.GetPokemonInfoUseCase
 import com.saydullin.pokemon.domain.usecases.GetPokemonPagingUseCase
@@ -20,9 +19,7 @@ class PokemonViewModel @Inject constructor(
     getPokemonPagingUseCase: GetPokemonPagingUseCase,
 ) : ViewModel() {
 
-    val pokemon: MutableState<List<Pokemon>> = mutableStateOf(listOf())
     val pokemonInfo: MutableState<PokemonInfo?> = mutableStateOf(null)
-    val pokemonLoading: MutableState<Boolean?> = mutableStateOf(null)
     val pokemonInfoLoading: MutableState<Boolean?> = mutableStateOf(null)
     val error = MutableLiveData<StatusCode?>(null)
     val isOffline: MutableState<Boolean> = mutableStateOf(false)
@@ -47,6 +44,18 @@ class PokemonViewModel @Inject constructor(
                 }
             }
             pokemonInfoLoading.value = false
+        }
+    }
+
+    fun setError(statusCode: StatusCode?) {
+        if (error.value != statusCode) {
+            error.value = statusCode
+        }
+    }
+
+    fun setOffline(isOff: Boolean) {
+        if (isOffline.value != isOff) {
+            isOffline.value = isOff
         }
     }
 
