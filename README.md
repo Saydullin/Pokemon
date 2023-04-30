@@ -1,9 +1,9 @@
 # Pokemon
 Pokemon Test App
 
-Clean Architecture, MVVM
-Retrofit, Room
-Jetpack Compose, Paging3 (Room caching)
+Clean Architecture, MVVM <br />
+Retrofit, Room <br />
+Jetpack Compose, Paging3 (Room caching)<br />
 
 <h3>Main screen</h3>
 
