@@ -63,6 +63,7 @@ fun PokemonList(navController: NavController, pokemonViewModel: PokemonViewModel
         if (loadState.refresh is LoadState.Error ||
             loadState.append is LoadState.Error) {
             pokemonViewModel.setError(StatusCode.CONNECTION_ERROR)
+            pokemonViewModel.setOffline(true)
             item {
                 Box(
                     modifier = Modifier
@@ -70,7 +71,7 @@ fun PokemonList(navController: NavController, pokemonViewModel: PokemonViewModel
                         .padding(10.dp),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Button(onClick = { allPokemons.refresh() }) {
+                    Button(onClick = { allPokemons.retry() }) {
                         Text(text = context.getString(R.string.try_again))
                     }
                 }
