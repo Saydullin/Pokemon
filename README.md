@@ -7,7 +7,7 @@ Jetpack Compose, Paging3 (Room caching)
 
 <h1>Main screen</h1>
 <br />
-![pokemon_main_screen (1)](https://user-images.githubusercontent.com/66932545/235356709-f59d79b8-d7f6-454b-9b74-f0b66605b136.png)
+![pokemon_main_screen](https://user-images.githubusercontent.com/66932545/235357134-af7fdeb0-5344-4039-ae14-2b29164152d9.png)
 
 <br />
 <br />
